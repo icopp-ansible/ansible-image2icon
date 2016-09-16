@@ -1,0 +1,13 @@
+---
+- name: Install Image2Icon via Mac App Store
+  command: mas install "{{ item.id }}"
+  args:
+    creates: /Applications/{{ item.name }}.app
+  with_items:
+    - { id: 992115977, name: "Image2Icon" }
+  when: ansible_os_family == "Darwin" and prefer_mas_over_homebrew == true
+
+- name: Install Image2Icon via Homebrew
+  homebrew_cask:
+    name: image2icon
+  when: ansible_os_family == "Darwin" and prefer_mas_over_homebrew == false
